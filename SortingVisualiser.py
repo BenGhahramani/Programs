@@ -6,20 +6,25 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import random
 
 def generate_data(data_size=50):
+    # Generate a list of random numbers with a given size
     return random.sample(range(1, 100), data_size)
 
 def create_window():
+    # Create the main window for the application
     window = tk.Tk()
     window.title("Sorting Algorithm Visualizer")
 
+    # Generate initial random data for sorting
     data = generate_data()
 
     def draw_data(data, colorArray):
+        # Draw the data on a bar chart
         ax.clear()
         ax.bar(range(len(data)), data, color=colorArray)
         canvas.draw_idle()
 
     def bubble_sort(data, draw_data):
+        # Implement the bubble sort algorithm
         n = len(data)
         for i in range(n):
             for j in range(0, n-i-1):
@@ -29,6 +34,7 @@ def create_window():
                     window.update_idletasks()
 
     def quick_sort(data, draw_data, start, end):
+        # Implement the quick sort algorithm
         if start >= end:
             return
 
@@ -47,6 +53,7 @@ def create_window():
         quick_sort(data, draw_data, index + 1, end)
 
     def insertion_sort(data, draw_data):
+        # Implement the insertion sort algorithm
         for i in range(1, len(data)):
             key = data[i]
             j = i - 1
@@ -58,6 +65,7 @@ def create_window():
                 window.update_idletasks()
 
     def selection_sort(data, draw_data):
+        # Implement the selection sort algorithm
         for i in range(len(data)):
             min_idx = i
             for j in range(i+1, len(data)):
@@ -68,9 +76,11 @@ def create_window():
             window.update_idletasks()
 
     def merge_sort(data, draw_data):
+        # Start the merge sort algorithm
         merge_sort_alg(data, 0, len(data) - 1, draw_data)
 
     def merge_sort_alg(data, left, right, draw_data):
+        # Recursive function for merge sort
         if left < right:
             middle = (left + right) // 2
             merge_sort_alg(data, left, middle, draw_data)
@@ -78,6 +88,7 @@ def create_window():
             merge(data, left, middle, right, draw_data)
 
     def merge(data, left, middle, right, draw_data):
+        # Merge function used in merge sort
         left_part = data[left:middle + 1]
         right_part = data[middle + 1:right + 1]
 
@@ -94,6 +105,7 @@ def create_window():
             window.update_idletasks()
 
     def heap_sort(data, draw_data):
+        # Implement the heap sort algorithm
         n = len(data)
 
         for i in range(n // 2 - 1, -1, -1):
@@ -104,6 +116,7 @@ def create_window():
             heapify(data, i, 0, draw_data)
 
     def heapify(data, n, i, draw_data):
+        # Heapify function used in heap sort
         largest = i
         left = 2 * i + 1
         right = 2 * i + 2
@@ -121,7 +134,7 @@ def create_window():
             draw_data(data, ['green' if x == largest or x == i else 'red' for x in range(len(data))])
             window.update_idletasks()
 
-    # Start sorting
+    # Start sorting based on the selected algorithm
     def start_sorting():
         if alg_menu.get() == 'Bubble Sort':
             bubble_sort(data, draw_data)
@@ -138,10 +151,12 @@ def create_window():
         draw_data(data, ['green' for x in range(len(data))])
 
     def reset_data():
+        # Reset the data to a new random set
         nonlocal data
         data = generate_data()
         draw_data(data, ['red' for x in range(len(data))])
 
+    # UI Setup
     # Create a toolbar frame
     toolbar = tk.Frame(window)
     toolbar.pack(side=tk.TOP, fill=tk.X)
